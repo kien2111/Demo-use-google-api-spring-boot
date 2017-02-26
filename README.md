@@ -10,3 +10,5 @@ Image:https://drive.google.com/open?id=0B_P49n0Og_BqNllBaGxwMWdfTGM
 Docs:https://developers.google.com/drive/v3/web/enable-sdk
 
 Source: https://developers.google.com/drive/v3/web/quickstart/java
+##Cài đặt:
+mvn spring-boot:run

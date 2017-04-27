@@ -1,4 +1,4 @@
-package com.infamous;
+package com.infamous.Controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.api.services.drive.Drive;
 import com.infamous.GDservice.GoogleDriveService;
-import com.infamous.GDservice.InformationFile;
+import com.infamous.Model.InformationFile;
 
 
 @Controller
@@ -65,12 +65,13 @@ public class MainController {
 	 * @param file
 	 * @param redirectAttributes
 	 * @return
+	 * @throws IOException 
 	 */
 	@PostMapping("upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes) throws IOException {
 
-        boolean flag=serviceGoogle.uploadFile(file.getOriginalFilename(),file.getName(), file.getContentType());
+        boolean flag=serviceGoogle.uploadFile(file.getOriginalFilename(), file.getInputStream(), file.getContentType());
         System.out.println(file.getName()+"     "+file.getOriginalFilename()+"     "+file.getContentType());
         
         if(flag==true){
@@ -82,30 +83,6 @@ public class MainController {
         }
         
         return "redirect:/upload";
-		
-		//UpLoadMultipart 
-//		 URL url;
-//		try {
-//			url = new URL("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart");
-//			
-//			 HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-//			  httpCon.setDoOutput(true);
-//			  httpCon.setRequestMethod("POST");
-//			  httpCon.setRequestProperty("Content-Type", file.getContentType());
-//			  httpCon.setRequestProperty("Content-Length",file.getSize()+"");
-//			
-//			  OutputStreamWriter out = new OutputStreamWriter(
-//			      httpCon.getOutputStream());
-//			  System.out.println(httpCon.getResponseCode());
-//			  System.out.println(httpCon.getResponseMessage());
-//			  out.close();
-//			  
-//		} catch (Exception e) {
-//			
-//			e.printStackTrace();
-//		}
-		 
-
     }
 	
 	/**

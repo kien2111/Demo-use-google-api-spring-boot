@@ -1,4 +1,4 @@
-package com.infamous.GDservice;
+package com.infamous.Model;
 
 public class InformationFile {
 

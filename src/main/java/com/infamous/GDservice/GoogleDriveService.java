@@ -11,12 +11,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.auth.oauth2.Credential;
-
-import com.google.api.services.drive.model.*;
-import com.google.api.services.drive.Drive;
 import com.google.api.client.http.FileContent;
-
-import com.infamous.GDservice.InfomationService;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.infamous.Model.InformationFile;
 
 @Service
@@ -34,8 +32,8 @@ public class GoogleDriveService {
 		Drive service = null;
 		try {
 			Credential credential = infor.authorize();
-			service = new Drive.Builder(infor.HTTP_TRANSPORT, infor.JSON_FACTORY, credential)
-					.setApplicationName(infor.APPLICATION_NAME).build();
+			service = new Drive.Builder(InfomationService.HTTP_TRANSPORT, InfomationService.JSON_FACTORY, credential)
+					.setApplicationName(InfomationService.APPLICATION_NAME).build();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -44,9 +42,10 @@ public class GoogleDriveService {
 		return service;
 	}
 
-	public boolean uploadFile(String fileNameAfterUpload, InputStream inputStream, String typeFile) {
+	public String uploadFile(String fileNameAfterUpload, InputStream inputStream, String typeFile) {
 		try {
 			File fileMetadata = new File();
+			
 			fileMetadata.setName(fileNameAfterUpload);
 			java.io.File file2Upload = new java.io.File(fileNameAfterUpload);
 
@@ -65,9 +64,9 @@ public class GoogleDriveService {
 			file2Upload.delete();
 			
 			
-			return true;
+			return file.getId();
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
 
 	}
@@ -132,8 +131,4 @@ public class GoogleDriveService {
 		return list;
 	}
 
-	public static void main(String... args) {
-		GoogleDriveService ss = new GoogleDriveService();
-
-	}
 }

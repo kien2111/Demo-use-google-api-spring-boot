@@ -1,38 +1,12 @@
 <html>
 <head>
-
-<title>Demo upload và download</title>
-
+<title>Demo upload  download</title>
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet" />
-<link href="css/starter-template.css" rel="stylesheet" />
 </head>
 <body>
 
-	<nav
-		class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-		<button class="navbar-toggler navbar-toggler-right" type="button"
-			data-toggle="collapse" data-target="#navbarsExampleDefault"
-			aria-controls="navbarsExampleDefault" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="">Spring Boot Application</a>
-
-		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" href="upload">Upload
-
-				</a></li>
-				<li class="nav-item active"><a class="nav-link" href="all-file">List file
-						<span class="sr-only">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Source
-						Code</a></li>
-			</ul>
-		</div>
-	</nav>
-
+	<div th:replace="include/header :: header1"></div>
 	<div>
 		<table class="table table-striped">
 			<thead>

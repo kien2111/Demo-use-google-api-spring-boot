@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.infamous.AmazonService.AmazonService;
+import com.infamous.AmazonService.AmazonServiceManager;
 import com.infamous.GDservice.GoogleDriveService;
 import com.infamous.Model.InformationFile;
 import com.infamous.Model.NewsModel;
@@ -27,11 +29,12 @@ import com.infamous.Service.NewsService;
 @Controller
 public class MainController {
 
-	private final GoogleDriveService serviceGoogle;
+	//private final GoogleDriveService serviceGoogle;
+	private final AmazonService serviceAmazon;
 
 	@Autowired
-	public MainController(GoogleDriveService serviceGoogle) {
-		this.serviceGoogle = serviceGoogle;
+	public MainController(AmazonService serviceAmazon) {
+		this.serviceAmazon = serviceAmazon;
 	}
 
 	@Autowired
@@ -49,7 +52,8 @@ public class MainController {
 	}
 
 	@PostMapping("/upload-news")
-	public String handlerUploadNews(@RequestParam("file") MultipartFile file, @RequestParam("title") String title,
+	public String handlerUploadNews(
+			@RequestParam("file") MultipartFile file, @RequestParam("title") String title,
 			@RequestParam("content") String content, RedirectAttributes redirectAttributes, HttpServletRequest request)
 			throws IOException {
 		try {
@@ -57,11 +61,11 @@ public class MainController {
 
 			model.setTitle(title);
 			model.setContent(content);
-			String flagupload = serviceGoogle.uploadFile(file.getOriginalFilename(), file.getInputStream(),
-					file.getContentType());
+			String flagupload = serviceAmazon.uploadFile(file.getOriginalFilename(), file.getInputStream());
+				
 
 			if (flagupload != null) {
-				model.setAttactLink("download/" + flagupload);
+				model.setAttactLink(AmazonServiceManager.DOWNLOAD_LINK + flagupload);
 			}
 			redirectAttributes.addFlashAttribute("message", "Upload Success");
 			newsService.addNews(model);
@@ -76,14 +80,13 @@ public class MainController {
 	@GetMapping("view")
 	@ModelAttribute("news")
 	public NewsModel handlerFindNews(String id) {
-
 		return newsService.findNewsById(id);
 	}
 
 	@GetMapping("all-file")
 	@ModelAttribute("list")
 	public List<InformationFile> Download() {
-		return serviceGoogle.getAllFile();
+		return serviceAmazon.getAllFile();
 	}
 
 	@GetMapping("all-news")
@@ -91,24 +94,26 @@ public class MainController {
 	public Iterable<NewsModel> allNews() {
 		return newsService.getAll();
 	}
-
-	@GetMapping("/download/{fileid}")
-	@ResponseBody
-	public void Download(@PathVariable String fileid, HttpServletResponse response) {
-		ByteArrayOutputStream out = serviceGoogle.downloadFile(fileid);
-		InformationFile info = serviceGoogle.printInformationFile(fileid);
-		System.out.println(info.toString());
-		response.setHeader("Content-Type", info.getType());
-
-		response.setHeader("Content-Length", String.valueOf(out.size()));
-
-		response.setHeader("Content-Disposition", "inline; filename=\"" + info.getTitle() + "\"");
-
-		try {
-			response.getOutputStream().write(out.toByteArray(), 0, out.size());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
+	
+//GOOGLE
+//	@GetMapping("/download/{fileid}")
+//	@ResponseBody
+//	public void Download(@PathVariable String fileid, HttpServletResponse response) {
+//		ByteArrayOutputStream out = serviceGoogle.downloadFile(fileid);
+//		InformationFile info = serviceGoogle.printInformationFile(fileid);
+//		System.out.println(info.toString());
+//		response.setHeader("Content-Type", info.getType());
+//
+//		response.setHeader("Content-Length", String.valueOf(out.size()));
+//
+//		response.setHeader("Content-Disposition", "inline; filename=\"" + info.getTitle() + "\"");
+//
+//		try {
+//			response.getOutputStream().write(out.toByteArray(), 0, out.size());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

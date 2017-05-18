@@ -9,7 +9,17 @@ public class InformationFile {
 	private String type;
 	private String id;
 	private String extension;
+	private String linkDownload;
 	
+	
+	public String getLinkDownload() {
+		return linkDownload;
+	}
+
+	public void setLinkDownload(String linkDownload) {
+		this.linkDownload = linkDownload;
+	}
+
 	public String getExtension() {
 		return extension;
 	}

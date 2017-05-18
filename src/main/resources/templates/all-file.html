@@ -12,15 +12,13 @@
 			<thead>
 				<tr>
 					<th>File name</th>
-					<th>File ID</th>
 					<th>Download</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="list : ${list}">
 					<td><a th:text="${list.getTitle()}" ></a></td>
-					<td><a th:text="${list.getId()}" ></a></td>
-					<td><a th:href="@{'download/'+${list.getId()}}">Link</a></td>
+					<td><a th:href="${list.getLinkDownload()}">Link</a></td>
 				</tr>
 			</tbody>
 		</table>
